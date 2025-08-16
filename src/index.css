@@ -2,41 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Pearl Medical Design System - Professional healthcare aesthetics */
 
 @layer base {
   :root {
+    /* Core backgrounds */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 215 25% 26%;
 
+    /* Card system */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 215 25% 26%;
 
+    /* Interactive elements */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 215 25% 26%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Brand colors - Medical teal primary */
+    --primary: 184 83% 44%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 184 83% 54%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Warm coral for feminine touch */
+    --secondary: 12 84% 92%;
+    --secondary-foreground: 215 25% 26%;
+    --secondary-accent: 12 84% 76%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted tones */
+    --muted: 210 17% 96%;
+    --muted-foreground: 215 13% 55%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Fresh mint */
+    --accent: 158 58% 85%;
+    --accent-foreground: 215 25% 26%;
+    --accent-bright: 158 58% 65%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Status colors */
+    --success: 142 76% 46%;
+    --success-foreground: 0 0% 100%;
+    --warning: 43 89% 58%;
+    --warning-foreground: 215 25% 26%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* UI elements */
+    --border: 210 17% 91%;
+    --input: 210 17% 96%;
+    --ring: 184 83% 44%;
 
-    --radius: 0.5rem;
+    /* Gradients - Medical elegance */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary-accent)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
+    --gradient-accent: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--accent-bright)));
+
+    /* Shadows - Professional depth */
+    --shadow-card: 0 4px 25px -5px hsl(var(--primary) / 0.1);
+    --shadow-hover: 0 8px 35px -8px hsl(var(--primary) / 0.15);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.2);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
