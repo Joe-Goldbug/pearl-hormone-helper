@@ -3,10 +3,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import { Brain, BarChart3, Shield, Users, Upload, Sparkles, TrendingUp, Heart, Clock, CheckCircle, FileText, ScanLine, Zap, Activity, Target, Award, ArrowRight, PlayCircle, ChevronRight } from 'lucide-react';
 import pearlHero from '@/assets/pearl-hero.jpg';
 
 const Index = () => {
+  const { user, login } = useAuth();
+
   return (
     <main className="min-h-screen bg-background">
       {/* Navigation */}
@@ -20,13 +24,24 @@ const Index = () => {
               <span className="text-xl font-bold text-foreground">Pearl</span>
             </div>
             <div className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">How It Works</a>
-              <a href="#hormones" className="text-muted-foreground hover:text-foreground transition-colors">Hormone Analysis</a>
-              <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors">About</a>
+              <Link to="/how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">How It Works</Link>
+              <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">About</Link>
+              <Link to="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</Link>
             </div>
-            <Button variant="medical" size="default">
-              Start Free Analysis
-            </Button>
+            <div className="flex items-center gap-4">
+               {!user ? (
+                 <Button onClick={login} variant="medical" size="default">
+                   <Heart className="w-4 h-4 mr-2" />
+                   Sign in with Google
+                 </Button>
+               ) : (
+                 <Link to="/dashboard">
+                   <Button variant="medical" size="default">
+                     Dashboard
+                   </Button>
+                 </Link>
+               )}
+             </div>
           </div>
         </div>
       </nav>
@@ -55,11 +70,13 @@ const Index = () => {
               
               <div className="space-y-6">
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button variant="hero" size="xl" className="group">
-                    <Upload className="w-5 h-5 mr-2" />
-                    Upload Report & Analyze
-                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button>
+                  <Link to="/upload">
+                    <Button variant="hero" size="xl" className="group w-full sm:w-auto">
+                      <Upload className="w-5 h-5 mr-2" />
+                      Upload Report & Analyze
+                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
                   <Button variant="outline" size="xl" className="group">
                     <PlayCircle className="w-5 h-5 mr-2" />
                     Watch Demo
@@ -472,11 +489,13 @@ const Index = () => {
                   placeholder="Enter your email to get started"
                   className="flex-1 h-12 bg-background border-border/50 focus:border-primary"
                 />
-                <Button variant="hero" size="lg" className="whitespace-nowrap group">
-                  <Upload className="w-4 h-4 mr-2" />
-                  Start Free Analysis
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <Link to="/upload">
+                  <Button variant="hero" size="lg" className="whitespace-nowrap group">
+                    <Upload className="w-4 h-4 mr-2" />
+                    Start Free Analysis
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
               </div>
               
               <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
@@ -551,7 +570,7 @@ const Index = () => {
           
           <div className="border-t border-border/50 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center">
             <p className="text-sm text-muted-foreground">
-              © 2024 Pearl Health. All rights reserved.
+              © 2025 Pearl Health. All rights reserved.
             </p>
             <p className="text-sm text-muted-foreground">
               Made with ❤️ for women's health
