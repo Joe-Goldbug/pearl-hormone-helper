@@ -39,7 +39,7 @@ const AboutUs = () => {
                 role: "团队掌舵人",
                 background: "团队的\"点火者\"与掌舵人，用细致入微的行动力让最初的创业点子落地生根。",
                 expertise: ["创业领导", "项目管理", "战略规划"],
-                avatar: "/aqsan.jpg"
+                avatar: "/aqsa.jpg"
               },
               {
                 name: "Rebecca",
