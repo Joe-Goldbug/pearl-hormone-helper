@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -12,20 +12,31 @@ import {
 import { 
   TrendingUp, TrendingDown, Calendar, Download, Share2, Settings, 
   Bell, Heart, Activity, Target, AlertCircle, CheckCircle, 
-  Upload, FileText, Sparkles, Brain, Shield, Clock, LogOut
+  Upload, FileText, Sparkles, Brain, Shield, Clock
 } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSearchParams } from 'react-router-dom';
+import Navigation from '@/components/Navigation';
 
 const Dashboard = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('3months');
-  const { user, logout } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'overview';
+  const [activeTab, setActiveTab] = useState<string>(initialTab);
+
+  useEffect(() => {
+    const urlTab = searchParams.get('tab');
+    if (urlTab && urlTab !== activeTab) {
+      setActiveTab(urlTab);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
   
-  // User data from authentication context
+  // Demo user data
   const userData = {
-    name: user?.name || "User",
-    email: user?.email || "user@example.com",
-    avatar: user?.avatar,
-    memberSince: user?.memberSince || "January 2024",
+    name: "User",
+    email: "demo@pearl.com",
+    avatar: undefined,
+    memberSince: "January 2024",
     totalReports: 12,
     lastUpdate: "March 15, 2024"
   };
@@ -155,6 +166,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Navigation />
       {/* Header */}
       <div className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6 py-4">
@@ -182,9 +194,6 @@ const Dashboard = () => {
               </Button>
               <Button variant="outline" size="sm">
                 <Settings className="w-4 h-4" />
-              </Button>
-              <Button variant="outline" size="sm" onClick={logout}>
-                <LogOut className="w-4 h-4" />
               </Button>
             </div>
           </div>
@@ -252,7 +261,7 @@ const Dashboard = () => {
         </div>
 
         {/* Main Content Area */}
-        <Tabs defaultValue="overview" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v); setSearchParams({ tab: v }); }} className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="trends">Trend Analysis</TabsTrigger>
@@ -295,14 +304,14 @@ const Dashboard = () => {
                         
                         <div className="flex items-center justify-between text-xs">
                           <Badge className={getStatusColor(hormone.status)}>
-                            {hormone.status === 'normal' ? '正常' : hormone.status === 'high' ? '偏高' : '偏低'}
+                            {hormone.status === 'normal' ? 'Normal' : hormone.status === 'high' ? 'High' : 'Low'}
                           </Badge>
-                          <span className="text-muted-foreground">范围: {hormone.range}</span>
+                          <span className="text-muted-foreground">Range: {hormone.range}</span>
                         </div>
                         
                         {hormone.change !== 0 && (
                           <div className="text-xs text-muted-foreground">
-                            较上次 {hormone.change > 0 ? '+' : ''}{hormone.change} {hormone.unit}
+                            vs. last {hormone.change > 0 ? '+' : ''}{hormone.change} {hormone.unit}
                           </div>
                         )}
                       </div>
@@ -312,15 +321,15 @@ const Dashboard = () => {
               </CardContent>
             </Card>
 
-            {/* 荷尔蒙趋势图表 */}
+            {/* Hormone Trend Charts */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="w-5 h-5" />
-                  荷尔蒙趋势
+                  Hormone Trends
                 </CardTitle>
                 <CardDescription>
-                  过去6个月的荷尔蒙水平变化
+                  Hormone level changes over the past 6 months
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -347,13 +356,13 @@ const Dashboard = () => {
             </Card>
           </TabsContent>
 
-          {/* 趋势分析标签页 */}
+          {/* Trend Analysis Tabs */}
           <TabsContent value="trends" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>LH & FSH 趋势</CardTitle>
-                  <CardDescription>促性腺激素水平变化</CardDescription>
+                  <CardTitle>LH & FSH Trends</CardTitle>
+                  <CardDescription>Gonadotropin hormone level changes</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="h-64">
@@ -373,8 +382,8 @@ const Dashboard = () => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>性激素水平</CardTitle>
-                  <CardDescription>雌二醇和孕酮变化</CardDescription>
+                  <CardTitle>Sex Hormone Levels</CardTitle>
+                  <CardDescription>Estradiol and progesterone changes</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="h-64">
@@ -394,7 +403,7 @@ const Dashboard = () => {
             </div>
           </TabsContent>
 
-          {/* AI洞察标签页 */}
+          {/* AI Insights Tab */}
           <TabsContent value="insights" className="space-y-6">
             <div className="grid gap-6">
               {aiInsights.map((insight, index) => (
@@ -415,16 +424,16 @@ const Dashboard = () => {
             </div>
           </TabsContent>
 
-          {/* 历史报告标签页 */}
+          {/* Historical Reports Tab */}
           <TabsContent value="reports" className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <FileText className="w-5 h-5" />
-                  历史报告
+                  Historical Reports
                 </CardTitle>
                 <CardDescription>
-                  查看和管理您的所有医疗报告
+                  View and manage all your medical reports
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -436,12 +445,12 @@ const Dashboard = () => {
                           <FileText className="w-5 h-5 text-primary" />
                         </div>
                         <div>
-                          <h4 className="font-medium text-foreground">荷尔蒙检测报告 #{report}</h4>
-                          <p className="text-sm text-muted-foreground">2024年{6-report+1}月15日 上传</p>
+                          <h4 className="font-medium text-foreground">Hormone Test Report #{report}</h4>
+                  <p className="text-sm text-muted-foreground">Uploaded on {new Date(2024, 6-report, 15).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Badge variant="secondary">已分析</Badge>
+                        <Badge variant="secondary">Analyzed</Badge>
                         <Button variant="ghost" size="sm">
                           <Download className="w-4 h-4" />
                         </Button>

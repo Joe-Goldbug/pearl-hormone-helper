@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Loader2, Lock, Heart } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { isAuthenticated, isLoading, login } = useAuth();
+  const { t } = useLanguage();
 
   if (isLoading) {
     return (
@@ -18,8 +20,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         <Card className="w-full max-w-md mx-4">
           <CardContent className="p-8 text-center">
             <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
-            <h2 className="text-xl font-semibold mb-2">Loading...</h2>
-            <p className="text-muted-foreground">Please wait while we verify your authentication.</p>
+            <h2 className="text-xl font-semibold mb-2">{t('common.loading')}</h2>
+            <p className="text-muted-foreground">{t('common.loadingAuth')}</p>
           </CardContent>
         </Card>
       </div>
@@ -36,9 +38,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
             </div>
             
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-foreground">Authentication Required</h2>
+              <h2 className="text-2xl font-bold text-foreground">{t('auth.authRequired')}</h2>
               <p className="text-muted-foreground">
-                Please sign in with your Google account to access your personalized hormone health dashboard.
+                {t('auth.signInMessage')}
               </p>
             </div>
 
@@ -50,11 +52,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
                 variant="hero"
               >
                 <Heart className="w-5 h-5 mr-2" />
-                Sign in with Google
+                {t('auth.signInWithGoogle')}
               </Button>
               
               <div className="text-xs text-muted-foreground">
-                Your data is protected with enterprise-grade security and HIPAA compliance.
+                {t('auth.dataProtection')}
               </div>
             </div>
 
@@ -64,7 +66,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
                 onClick={() => window.location.href = '/'}
                 className="text-sm"
               >
-                ← Back to Home
+                ← {t('nav.backToHome')}
               </Button>
             </div>
           </CardContent>

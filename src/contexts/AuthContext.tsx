@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface User {
   id: string;
@@ -31,95 +31,26 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // Demo mode - always have a user logged in
+  const [user] = useState<User>({
+    id: 'demo-user',
+    name: 'Demo User',
+    email: 'demo@pearl.com',
+    avatar: undefined,
+    memberSince: 'January 2024'
+  });
+  const [isLoading] = useState(false);
 
-  // Google OAuth configuration
-  const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || 'your-google-client-id';
-
-  useEffect(() => {
-    // Check if user is already logged in (from localStorage)
-    const savedUser = localStorage.getItem('pearl_user');
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (error) {
-        console.error('Error parsing saved user:', error);
-        localStorage.removeItem('pearl_user');
-      }
-    }
-    setIsLoading(false);
-  }, []);
+  // No useEffect needed for demo mode
 
   const login = async (): Promise<void> => {
-    setIsLoading(true);
-    try {
-      // Initialize Google OAuth
-      if (!window.google) {
-        throw new Error('Google OAuth library not loaded');
-      }
-
-      const response = await new Promise<any>((resolve, reject) => {
-        window.google.accounts.oauth2.initTokenClient({
-          client_id: GOOGLE_CLIENT_ID,
-          scope: 'email profile',
-          callback: (response: any) => {
-            if (response.error) {
-              reject(response.error);
-            } else {
-              resolve(response);
-            }
-          },
-        }).requestAccessToken();
-      });
-
-      // Get user info from Google
-      const userInfoResponse = await fetch(
-        `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${response.access_token}`
-      );
-      const userInfo = await userInfoResponse.json();
-
-      const newUser: User = {
-        id: userInfo.id,
-        name: userInfo.name,
-        email: userInfo.email,
-        avatar: userInfo.picture,
-        memberSince: new Date().toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long' 
-        })
-      };
-
-      setUser(newUser);
-      localStorage.setItem('pearl_user', JSON.stringify(newUser));
-    } catch (error) {
-      console.error('Login failed:', error);
-      // For demo purposes, create a mock user if Google auth fails
-      const mockUser: User = {
-        id: 'demo-user',
-        name: 'Demo User',
-        email: 'demo@pearl.ai',
-        avatar: undefined,
-        memberSince: new Date().toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long' 
-        })
-      };
-      setUser(mockUser);
-      localStorage.setItem('pearl_user', JSON.stringify(mockUser));
-    } finally {
-      setIsLoading(false);
-    }
+    // Demo mode - no actual login needed
+    console.log('Demo mode: User already logged in');
   };
 
   const logout = () => {
-    setUser(null);
-    localStorage.removeItem('pearl_user');
-    
-    // Sign out from Google if available
-    if (window.google && window.google.accounts) {
-      window.google.accounts.id.disableAutoSelect();
-    }
+    // Demo mode - no actual logout needed
+    console.log('Demo mode: Logout not implemented');
   };
 
   const value: AuthContextType = {

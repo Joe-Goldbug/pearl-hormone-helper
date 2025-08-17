@@ -23,8 +23,9 @@ import {
   User, LogOut, Settings, Heart, Shield, 
   Mail, Calendar, CheckCircle, Sparkles 
 } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-// 模拟用户状态
+// Mock user state
 interface User {
   id: string;
   name: string;
@@ -42,20 +43,21 @@ const GoogleAuth: React.FC<GoogleAuthProps> = ({ onUserChange }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
+  const { t } = useLanguage();
 
-  // 模拟Google登录
+  // Mock Google login
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     
-    // 模拟API调用延迟
+    // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     const mockUser: User = {
       id: '1',
-      name: '张小美',
+      name: 'Sarah Johnson',
       email: 'xiaomei@gmail.com',
       avatar: '/api/placeholder/100/100',
-      memberSince: '2024年1月',
+      memberSince: 'January 2024',
       isPremium: true
     };
     
@@ -65,13 +67,13 @@ const GoogleAuth: React.FC<GoogleAuthProps> = ({ onUserChange }) => {
     onUserChange?.(mockUser);
   };
 
-  // 登出
+  // Logout
   const handleLogout = () => {
     setUser(null);
     onUserChange?.(null);
   };
 
-  // 如果用户已登录，显示用户菜单
+  // If user is logged in, show user menu
   if (user) {
     return (
       <DropdownMenu>
@@ -115,19 +117,19 @@ const GoogleAuth: React.FC<GoogleAuthProps> = ({ onUserChange }) => {
                 </div>
               </div>
               
-              {/* 快速统计 */}
+              {/* Quick Statistics */}
               <div className="grid grid-cols-3 gap-2 pt-2 border-t border-border/50">
                 <div className="text-center">
                   <div className="text-lg font-bold text-primary">12</div>
-                  <div className="text-xs text-muted-foreground">报告</div>
+                  <div className="text-xs text-muted-foreground">Reports</div>
                 </div>
                 <div className="text-center">
                   <div className="text-lg font-bold text-green-600">92</div>
-                  <div className="text-xs text-muted-foreground">健康分</div>
+                  <div className="text-xs text-muted-foreground">Health Score</div>
                 </div>
                 <div className="text-center">
                   <div className="text-lg font-bold text-blue-600">3</div>
-                  <div className="text-xs text-muted-foreground">建议</div>
+                  <div className="text-xs text-muted-foreground">Recommendations</div>
                 </div>
               </div>
             </div>
@@ -135,48 +137,48 @@ const GoogleAuth: React.FC<GoogleAuthProps> = ({ onUserChange }) => {
           <DropdownMenuSeparator />
           <DropdownMenuItem className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />
-            <span>个人资料</span>
+            <span>Profile</span>
           </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer">
             <Heart className="mr-2 h-4 w-4" />
-            <span>健康仪表板</span>
+            <span>Health Dashboard</span>
           </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer">
             <Settings className="mr-2 h-4 w-4" />
-            <span>设置</span>
+            <span>Settings</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="cursor-pointer text-red-600" onClick={handleLogout}>
             <LogOut className="mr-2 h-4 w-4" />
-            <span>退出登录</span>
+            <span>Sign Out</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     );
   }
 
-  // 如果用户未登录，显示登录按钮
+  // If user is not logged in, show login button
   return (
     <>
       <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
         <DialogTrigger asChild>
           <Button variant="outline" className="gap-2">
             <User className="w-4 h-4" />
-            登录
+            {t('auth.signIn')}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-center text-2xl font-bold">
-              欢迎来到 Pearl
+              {t('auth.welcomeTitle')}
             </DialogTitle>
             <DialogDescription className="text-center text-muted-foreground">
-              使用Google账户登录，开始您的荷尔蒙健康之旅
+              {t('auth.welcomeMessage')}
             </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-6 py-4">
-            {/* 登录按钮 */}
+            {/* Login Button */}
             <Button 
               onClick={handleGoogleLogin} 
               disabled={isLoading}
@@ -185,7 +187,7 @@ const GoogleAuth: React.FC<GoogleAuthProps> = ({ onUserChange }) => {
               {isLoading ? (
                 <div className="flex items-center gap-2">
                   <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
-                  <span>登录中...</span>
+                  <span>{t('auth.signingIn')}</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
@@ -195,22 +197,22 @@ const GoogleAuth: React.FC<GoogleAuthProps> = ({ onUserChange }) => {
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                   </svg>
-                  <span>使用 Google 登录</span>
+                  <span>{t('auth.signInWithGoogle')}</span>
                 </div>
               )}
             </Button>
             
-            {/* 功能亮点 */}
+            {/* Feature Highlights */}
             <div className="space-y-3">
               <div className="text-sm font-medium text-center text-muted-foreground">
-                登录后您可以享受：
+                {t('auth.afterSignIn')}
               </div>
               <div className="grid gap-3">
                 {[
-                  { icon: Heart, text: "个人荷尔蒙追踪仪表板" },
-                  { icon: Shield, text: "安全的数据存储和隐私保护" },
-                  { icon: Sparkles, text: "AI驱动的个性化健康建议" },
-                  { icon: CheckCircle, text: "无限制的报告上传和分析" }
+                  { icon: Heart, text: t('auth.features.dashboard') },
+                  { icon: Shield, text: t('auth.features.security') },
+                  { icon: Sparkles, text: t('auth.features.ai') },
+                  { icon: CheckCircle, text: t('auth.features.unlimited') }
                 ].map((feature, index) => (
                   <div key={index} className="flex items-center gap-3 text-sm">
                     <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -222,10 +224,10 @@ const GoogleAuth: React.FC<GoogleAuthProps> = ({ onUserChange }) => {
               </div>
             </div>
             
-            {/* 隐私说明 */}
+            {/* Privacy Notice */}
             <div className="text-xs text-center text-muted-foreground space-y-1">
-              <p>我们严格遵守HIPAA合规标准</p>
-              <p>您的医疗数据将得到最高级别的保护</p>
+              <p>{t('auth.hipaaCompliance')}</p>
+              <p>{t('auth.dataProtectionMessage')}</p>
             </div>
           </div>
         </DialogContent>

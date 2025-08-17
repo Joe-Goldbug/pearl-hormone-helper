@@ -7,8 +7,13 @@ import {
   Upload, BarChart3, Users, Clock, Zap, ArrowRight
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Navigation from '@/components/Navigation';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Pricing = () => {
+  const { t } = useLanguage();
+  const { user, login, logout } = useAuth();
   const features = {
     free: [
       'Upload up to 3 reports per month',
@@ -33,28 +38,7 @@ const Pricing = () => {
 
   return (
     <main className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
-                <Heart className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-foreground">Pearl</span>
-            </Link>
-            <div className="hidden md:flex items-center gap-8">
-              <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-              <Link to="/how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">How It Works</Link>
-              <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">About</Link>
-              <span className="text-foreground font-medium">Pricing</span>
-            </div>
-            <Link to="/">
-              <Button variant="outline">Back to Home</Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Navigation variant="transparent" />
 
       {/* Hero Section */}
       <section className="py-20 lg:py-32">
@@ -153,53 +137,6 @@ const Pricing = () => {
                 </p>
               </CardContent>
             </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Comparison */}
-      <section className="py-20 bg-muted/20">
-        <div className="max-w-6xl mx-auto px-6 sm:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Why Choose Pearl Premium?
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Unlock advanced features designed for serious hormone health management
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Brain,
-                title: "Advanced AI Analysis",
-                description: "Get deeper insights with our medical-grade AI that analyzes complex hormone patterns and provides personalized recommendations.",
-                color: "from-blue-500 to-cyan-500"
-              },
-              {
-                icon: BarChart3,
-                title: "Comprehensive Tracking",
-                description: "Track unlimited reports, visualize long-term trends, and monitor your hormone health journey with detailed analytics.",
-                color: "from-green-500 to-emerald-500"
-              },
-              {
-                icon: Shield,
-                title: "Priority Support",
-                description: "Get priority access to our medical experts, faster response times, and personalized consultation sessions.",
-                color: "from-purple-500 to-indigo-500"
-              }
-            ].map((feature, index) => (
-              <Card key={index} className="text-center border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mx-auto mb-4`}>
-                    <feature.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-lg mb-3">{feature.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
-                </CardContent>
-              </Card>
-            ))}
           </div>
         </div>
       </section>

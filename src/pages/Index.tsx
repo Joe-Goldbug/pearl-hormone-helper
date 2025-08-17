@@ -6,45 +6,17 @@ import { Input } from '@/components/ui/input';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Brain, BarChart3, Shield, Users, Upload, Sparkles, TrendingUp, Heart, Clock, CheckCircle, FileText, ScanLine, Zap, Activity, Target, Award, ArrowRight, PlayCircle, ChevronRight } from 'lucide-react';
+import Navigation from '@/components/Navigation';
+import { useLanguage } from '@/contexts/LanguageContext';
 import pearlHero from '@/assets/pearl-hero.jpg';
 
 const Index = () => {
-  const { user, login } = useAuth();
+  const { user, login, logout } = useAuth();
+  const { t } = useLanguage();
 
   return (
     <main className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
-                <Heart className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-foreground">Pearl</span>
-            </div>
-            <div className="hidden md:flex items-center gap-8">
-              <Link to="/how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">How It Works</Link>
-              <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">About</Link>
-              <Link to="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</Link>
-            </div>
-            <div className="flex items-center gap-4">
-               {!user ? (
-                 <Button onClick={login} variant="medical" size="default">
-                   <Heart className="w-4 h-4 mr-2" />
-                   Sign in with Google
-                 </Button>
-               ) : (
-                 <Link to="/dashboard">
-                   <Button variant="medical" size="default">
-                     Dashboard
-                   </Button>
-                 </Link>
-               )}
-             </div>
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 lg:py-32">
@@ -57,10 +29,9 @@ const Index = () => {
                   <Brain className="w-3 h-3 mr-1" />
                   AI-Powered Hormone Analysis
                 </Badge>
-                <h1 className="text-4xl lg:text-6xl font-bold text-foreground leading-tight">
-                  Know Your Body.{' '}
+                <h1 className="text-4xl lg:text-6xl font-bold text-foreground leading-tight"> 
                   <span className="bg-gradient-to-r from-primary via-primary-glow to-secondary-accent bg-clip-text text-transparent">
-                    Trust Your Data.
+                    Your fertility hormones, decoded
                   </span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">
@@ -77,10 +48,6 @@ const Index = () => {
                       <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
-                  <Button variant="outline" size="xl" className="group">
-                    <PlayCircle className="w-5 h-5 mr-2" />
-                    Watch Demo
-                  </Button>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
@@ -127,42 +94,184 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Hormone Indicators */}
-      <section id="hormones" className="py-16 bg-muted/20">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8">
-          <div className="text-center space-y-4 mb-12">
-            <Badge className="bg-secondary/10 text-secondary border-secondary/20 w-fit mx-auto">
-              <Activity className="w-3 h-3 mr-1" />
-              6 Core Hormone Analysis
-            </Badge>
-            <h2 className="text-3xl font-bold text-foreground">
-              Comprehensive Fertility Hormone Tracking
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Our AI analyzes six essential fertility hormones from your medical reports to provide complete reproductive health insights.
-            </p>
+      {/* Hormone Analysis Hero */}
+      <section id="hormones" className="py-20 bg-gradient-to-br from-muted/10 via-primary/5 to-secondary/10 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 relative">
+          {/* Section Header */}
+          <div className="text-center space-y-6 mb-16">
+            <div className="space-y-4">
+              <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
+                Your <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Fertility Hormones</span> Starts Here
+
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                These 6 hormones hold the key to your reproductive health. When balanced correctly, they work together to optimize your fertility potential.
+              </p>
+            </div>
+            
+            {/* Success message */}
+            <div className="inline-flex items-center gap-3 bg-success/10 border border-success/20 rounded-full px-6 py-3 text-success">
+              <CheckCircle className="w-5 h-5" />
+              <span className="font-medium">Optimize these levels = Improve your fertility chances</span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          {/* Interactive Hormone Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {[
-              { hormone: 'LH', name: 'Luteinizing Hormone', value: '17.95', unit: 'mIU/mL', color: 'from-red-500 to-pink-500' },
-              { hormone: 'FSH', name: 'Follitropin', value: '5.71', unit: 'mIU/mL', color: 'from-blue-500 to-cyan-500' },
-              { hormone: 'PROG', name: 'Progesterone', value: '0.62', unit: 'ng/mL', color: 'from-green-500 to-emerald-500' },
-              { hormone: 'T', name: 'Testosterone', value: '0.49', unit: 'ng/mL', color: 'from-purple-500 to-indigo-500' },
-              { hormone: 'PRL', name: 'Prolactin', value: '6.08', unit: 'ng/mL', color: 'from-orange-500 to-amber-500' },
-              { hormone: 'E2', name: 'Estradiol', value: '47.94', unit: 'pg/mL', color: 'from-teal-500 to-cyan-500' }
+              { 
+                hormone: 'LH', 
+                name: 'Luteinizing Hormone', 
+                value: '17.95', 
+                unit: 'mIU/mL', 
+                color: 'from-pink-500 to-rose-500',
+                role: 'Triggers Ovulation',
+                impact: 'Essential for egg release and conception timing',
+                status: 'optimal',
+                improvement: '+32% conception rate when optimized'
+              },
+              { 
+                hormone: 'FSH', 
+                name: 'Follicle Stimulating Hormone', 
+                value: '5.71', 
+                unit: 'mIU/mL', 
+                color: 'from-blue-500 to-cyan-500',
+                role: 'Develops Eggs',
+                impact: 'Stimulates follicle growth and egg maturation',
+                status: 'optimal',
+                improvement: '+28% egg quality when balanced'
+              },
+              { 
+                hormone: 'PROG', 
+                name: 'Progesterone', 
+                value: '0.62', 
+                unit: 'ng/mL', 
+                color: 'from-emerald-500 to-green-500',
+                role: 'Supports Pregnancy',
+                impact: 'Maintains uterine lining for implantation',
+                status: 'needs-attention',
+                improvement: '+45% implantation success when optimized'
+              },
+              { 
+                hormone: 'T', 
+                name: 'Testosterone', 
+                value: '0.49', 
+                unit: 'ng/mL', 
+                color: 'from-purple-500 to-indigo-500',
+                role: 'Boosts Libido',
+                impact: 'Affects sexual desire and ovarian function',
+                status: 'optimal',
+                improvement: '+20% sexual wellness when balanced'
+              },
+              { 
+                hormone: 'PRL', 
+                name: 'Prolactin', 
+                value: '6.08', 
+                unit: 'ng/mL', 
+                color: 'from-amber-500 to-orange-500',
+                role: 'Regulates Cycles',
+                impact: 'Controls menstrual cycle regularity',
+                status: 'optimal',
+                improvement: '+35% cycle regularity when optimized'
+              },
+              { 
+                hormone: 'E2', 
+                name: 'Estradiol', 
+                value: '47.94', 
+                unit: 'pg/mL', 
+                color: 'from-teal-500 to-cyan-500',
+                role: 'Prepares Uterus',
+                impact: 'Builds endometrial lining for conception',
+                status: 'optimal',
+                improvement: '+40% endometrial health when balanced'
+              }
             ].map((item, index) => (
-              <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
-                <CardContent className="p-4 text-center">
-                  <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${item.color} mx-auto mb-3 flex items-center justify-center shadow-md`}>
-                    <span className="text-white font-bold text-sm">{item.hormone}</span>
+              <Card key={index} className="group hover:scale-105 transition-all duration-500 border-border/50 hover:border-primary/30 hover:shadow-2xl bg-card/80 backdrop-blur-sm">
+                <CardContent className="p-6">
+                  {/* Status indicator */}
+                  <div className="flex justify-between items-start mb-4">
+                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${
+                      item.status === 'optimal' 
+                        ? 'bg-success/10 text-success border border-success/20' 
+                        : 'bg-warning/10 text-warning border border-warning/20'
+                    }`}>
+                      {item.status === 'optimal' ? (
+                        <>
+                          <CheckCircle className="w-3 h-3" />
+                          Optimal
+                        </>
+                      ) : (
+                        <>
+                          <Target className="w-3 h-3" />
+                          Needs Focus
+                        </>
+                      )}
+                    </div>
                   </div>
-                  <h3 className="font-semibold text-sm mb-1">{item.name}</h3>
-                  <div className="text-lg font-bold text-primary mb-1">{item.value}</div>
-                  <div className="text-xs text-muted-foreground">{item.unit}</div>
+
+                  {/* Hormone icon and info */}
+                  <div className="text-center mb-6">
+                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${item.color} mx-auto mb-4 flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow`}>
+                      <span className="text-white font-bold text-lg">{item.hormone}</span>
+                    </div>
+                    <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">{item.name}</h3>
+                    <div className="text-2xl font-bold text-primary mb-1">{item.value}</div>
+                    <div className="text-sm text-muted-foreground">{item.unit}</div>
+                  </div>
+
+                  {/* Role and impact */}
+                  <div className="space-y-3 mb-4">
+                    <div className="text-center">
+                      <div className="font-semibold text-foreground text-sm mb-1">{item.role}</div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{item.impact}</p>
+                    </div>
+                  </div>
+
+                  {/* Improvement potential */}
+                  <div className="bg-gradient-to-r from-success/5 to-primary/5 rounded-lg p-3 border border-success/10">
+                    <div className="flex items-center gap-2 text-xs text-success font-medium">
+                      <TrendingUp className="w-3 h-3" />
+                      <span>{item.improvement}</span>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             ))}
+          </div>
+
+          {/* Call to Action */}
+          <div className="text-center space-y-8">
+            <div className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 rounded-2xl p-8 border border-primary/20">
+              <div className="space-y-4 mb-6">
+                <h3 className="text-2xl font-bold text-foreground">Ready to Optimize Your Fertility?</h3>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                  Upload your hormone test report now and get personalized recommendations to balance these critical levels for optimal fertility.
+                </p>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Link to="/upload">
+                  <Button size="lg" className="group bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90">
+                    <Upload className="w-5 h-5 mr-2" />
+                    Upload My Report
+                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Link to="/how-it-works">
+                  <Button variant="outline" size="lg" className="group">
+                    <PlayCircle className="w-5 h-5 mr-2" />
+                    See How It Works
+                    <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -215,7 +324,7 @@ const Index = () => {
                     <Brain className="w-6 h-6 text-accent" />
                   </div>
                   <div className="space-y-2">
-                    <h3 className="text-xl font-semibold text-foreground">DeepSeek Medical AI</h3>
+                    <h3 className="text-xl font-semibold text-foreground">Medical AI</h3>
                     <p className="text-muted-foreground leading-relaxed">
                       Professional medical AI analyzes your hormone patterns and provides personalized recommendations based on clinical data.
                     </p>
@@ -240,6 +349,22 @@ const Index = () => {
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="space-y-6">
+                    {/* How to read/use tip bar */}
+                    <div className="p-3 rounded-md bg-primary/5 border border-primary/10">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <BarChart3 className="w-4 h-4 text-primary mt-0.5" />
+                          <span>
+                            How to read: Green ✓ means within the normal range; ⚠ indicates low or high. Tap any hormone card to see units and the lab reference range. Use "View Trends" to explore changes over time.
+                          </span>
+                        </div>
+                        <Link to="/dashboard">
+                          <Button size="sm" variant="medical" className="whitespace-nowrap">Open Full Dashboard</Button>
+                        </Link>
+                      </div>
+                    </div>
+
+                    {/* Hormone values grid */}
                     <div className="grid grid-cols-2 gap-4">
                       {[
                         { name: 'LH', value: '17.95', unit: 'mIU/mL', status: 'normal' },
@@ -247,17 +372,33 @@ const Index = () => {
                         { name: 'PROG', value: '0.62', unit: 'ng/mL', status: 'low' },
                         { name: 'E2', value: '47.94', unit: 'pg/mL', status: 'normal' }
                       ].map((hormone, idx) => (
-                        <div key={idx} className="p-3 rounded-lg bg-muted/30 border border-border/30">
+                        <div key={idx} className="p-3 rounded-lg bg-muted/30 border border-border/30 hover:shadow-md transition-shadow cursor-pointer" title={`Range and units: ${hormone.unit}`}>
                           <div className="text-sm font-medium text-foreground">{hormone.name}</div>
                           <div className="text-lg font-bold text-primary">{hormone.value}</div>
                           <div className="text-xs text-muted-foreground">{hormone.unit}</div>
                           <div className={`text-xs mt-1 ${hormone.status === 'normal' ? 'text-success' : 'text-warning'}`}>
-                            {hormone.status === 'normal' ? '✓ Normal' : '⚠ Low'}
+                            {hormone.status === 'normal' ? '✓ Normal' : '⚠ Low/High'}
                           </div>
                         </div>
                       ))}
                     </div>
-                    
+
+                    {/* Legend + View Trends CTA */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-success"></span><span>Normal</span></div>
+                        <div className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-warning"></span><span>Low/High</span></div>
+                        <div className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-primary"></span><span>Tap for range</span></div>
+                      </div>
+                      <Link to="/dashboard?tab=trends">
+                        <Button variant="outline" size="sm" className="flex items-center gap-2">
+                          <TrendingUp className="w-4 h-4" />
+                          View Trends
+                        </Button>
+                      </Link>
+                    </div>
+
+                    {/* AI Recommendations */}
                     <div className="space-y-3">
                       <h4 className="font-medium text-foreground flex items-center gap-2">
                         <Target className="w-4 h-4 text-primary" />
@@ -290,18 +431,6 @@ const Index = () => {
       {/* How It Works */}
       <section className="py-20 bg-muted/20">
         <div className="max-w-7xl mx-auto px-6 sm:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <Badge className="bg-accent/10 text-accent border-accent/20 w-fit mx-auto">
-              <Award className="w-3 h-3 mr-1" />
-              Medical-Grade Process
-            </Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              From Report to Insights in Under 60 Seconds
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Our streamlined aggregator platform makes complex hormone analysis simple and accessible for women aged 25-45 facing fertility challenges.
-            </p>
-          </div>
 
           <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
             {[
@@ -315,7 +444,7 @@ const Index = () => {
               {
                 step: "02", 
                 title: "AI Extraction & Analysis",
-                description: "Advanced OCR technology extracts LH, FSH, PROG, T, PRL, and E2 values. DeepSeek medical AI analyzes patterns against clinical ranges.",
+                description: "Advanced OCR technology extracts LH, FSH, PROG, T, PRL, and E2 values. Medical AI analyzes patterns against clinical ranges.",
                 icon: Brain,
                 details: ["6 hormone indicators", "Reference range detection", "Medical AI analysis", "< 30 second processing"]
               },
@@ -370,30 +499,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Trust Indicators */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            {[
-              { number: "5,000+", label: "Community Members", icon: Users },
-              { number: "99%", label: "Analysis Accuracy", icon: Target },
-              { number: "<30s", label: "Report Processing", icon: Zap },
-              { number: "24/7", label: "Secure Access", icon: Shield }
-            ].map((stat, index) => (
-              <div key={index} className="space-y-3">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                  <stat.icon className="w-6 h-6 text-primary" />
-                </div>
-                <div className="space-y-1">
-                  <div className="text-3xl font-bold text-foreground">{stat.number}</div>
-                  <div className="text-muted-foreground">{stat.label}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* About Section */}
       <section id="about" className="py-20">
         <div className="max-w-7xl mx-auto px-6 sm:px-8">
@@ -404,14 +509,14 @@ const Index = () => {
                 Built for Women's Health
               </Badge>
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-                Empowering Your Fertility Journey with AI
+                Empowering Your Fertility Hormones with AI
               </h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
                   Pearl is specifically designed for women aged 25-45 who are facing fertility challenges. We understand that navigating hormone reports can be overwhelming, which is why we've created an intelligent aggregator platform that simplifies complex medical data.
                 </p>
                 <p>
-                  Our platform combines cutting-edge OCR technology with DeepSeek medical AI to provide you with instant, professional-grade analysis of your hormone levels. From LH and FSH to progesterone and estradiol, we track the six most critical fertility indicators.
+                  Our platform combines cutting-edge OCR technology with Medical AI to provide you with instant, professional-grade analysis of your hormone levels. From LH and FSH to progesterone and estradiol, we track the six most critical fertility indicators.
                 </p>
                 <p>
                   With our 5,000+ member community and commitment to HIPAA compliance, Pearl provides both the technology and support system you need on your fertility journey.
@@ -444,7 +549,7 @@ const Index = () => {
                 {
                   icon: Brain,
                   title: "Medical-Grade AI",
-                  description: "DeepSeek AI provides professional analysis comparable to clinical assessments."
+                  description: "Medical AI provides professional analysis comparable to clinical assessments."
                 }
               ].map((feature, index) => (
                 <div key={index} className="flex gap-4">

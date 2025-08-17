@@ -1,35 +1,42 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Upload, Brain, TrendingUp, FileText, ScanLine, Zap, ArrowRight, CheckCircle, Activity, Target, Award, PlayCircle, Heart } from 'lucide-react';
+import { Upload, Brain, TrendingUp, FileText, ScanLine, Zap, ArrowRight, CheckCircle, Activity, Target, Award, PlayCircle, Heart, BarChart3, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ResponsiveContainer, LineChart, Line, XAxis, CartesianGrid, Tooltip } from 'recharts';
+import Navigation from '@/components/Navigation';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const HowItWorks = () => {
+  // Demo simulation state
+  const [step, setStep] = useState<'upload' | 'ocr' | 'charts' | 'insights'>('upload');
+  const { t } = useLanguage();
+  const { user, login, logout } = useAuth();
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setStep((prev) => (prev === 'upload' ? 'ocr' : prev === 'ocr' ? 'charts' : prev === 'charts' ? 'insights' : 'upload'));
+    }, 2500);
+    return () => clearInterval(timer);
+  }, []);
+
+  const miniData = useMemo(() => (
+    [
+      { date: '01', LH: 7.8, FSH: 6.1, E2: 120 },
+      { date: '02', LH: 8.2, FSH: 6.3, E2: 138 },
+      { date: '03', LH: 8.5, FSH: 6.9, E2: 145 },
+      { date: '04', LH: 9.2, FSH: 6.7, E2: 148 },
+      { date: '05', LH: 8.9, FSH: 7.1, E2: 152 },
+      { date: '06', LH: 8.1, FSH: 6.8, E2: 142 }
+    ]
+  ), []);
+
   return (
     <main className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
-                <Heart className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-foreground">Pearl</span>
-            </Link>
-            <div className="hidden md:flex items-center gap-8">
-              <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-              <span className="text-foreground font-medium">How It Works</span>
-              <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">About</Link>
-              <Link to="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</Link>
-            </div>
-            <Link to="/">
-              <Button variant="outline">Back to Home</Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Navigation variant="transparent" />
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 lg:py-32">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5"></div>
@@ -54,91 +61,12 @@ const HowItWorks = () => {
                 Upload Report Now
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="outline" size="xl" className="group">
-                <PlayCircle className="w-5 h-5 mr-2" />
-                Watch Demo Video
-              </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Three-Step Process */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8">
-          <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
-            {[
-              {
-                step: "01",
-                title: "Upload Medical Report",
-                description: "Simply take a photo or upload any medical lab's hormone test report PDF. Our platform supports all major laboratory formats.",
-                icon: Upload,
-                details: ["Supports JPG, PNG, PDF formats", "Any medical lab report", "Instant upload processing", "Secure encrypted storage"],
-                image: "/api/placeholder/400/300"
-              },
-              {
-                step: "02", 
-                title: "AI Extraction & Analysis",
-                description: "Advanced OCR technology extracts LH, FSH, PROG, T, PRL, and E2 values. Medical AI analyzes patterns against clinical ranges.",
-                icon: Brain,
-                details: ["6 hormone indicators", "Reference range detection", "Medical AI analysis", "< 30 seconds processing"],
-                image: "/api/placeholder/400/300"
-              },
-              {
-                step: "03",
-                title: "Personalized Recommendations",
-                description: "Get professional-grade insights with personalized fertility advice, lifestyle guidance, and visualized data trends.",
-                icon: TrendingUp,
-                details: ["Fertility expert advice", "Lifestyle recommendations", "Visual chart trends", "Actionable next steps"],
-                image: "/api/placeholder/400/300"
-              }
-            ].map((item, index) => (
-              <div key={index} className="relative group">
-                <Card className="h-full border-border/50 hover:border-primary/20 hover:shadow-2xl transition-all duration-500 overflow-hidden">
-                  {/* 步骤图片 */}
-                  <div className="relative h-48 bg-gradient-to-br from-primary/10 to-secondary/10 overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all duration-500">
-                        <item.icon className="w-10 h-10 text-white" />
-                      </div>
-                    </div>
-                    <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-secondary-accent text-foreground text-lg font-bold flex items-center justify-center shadow-lg">
-                      {item.step}
-                    </div>
-                  </div>
-                  
-                  <CardHeader className="text-center pb-4">
-                    <CardTitle className="text-xl mb-2">{item.title}</CardTitle>
-                    <CardDescription className="text-muted-foreground leading-relaxed">
-                      {item.description}
-                    </CardDescription>
-                  </CardHeader>
-                  
-                  <CardContent className="pt-0">
-                    <ul className="space-y-3">
-                      {item.details.map((detail, idx) => (
-                        <li key={idx} className="flex items-center gap-3 text-sm text-muted-foreground">
-                          <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0"></div>
-                          <span>{detail}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-                
-                {index < 2 && (
-                  <div className="hidden lg:block absolute top-24 left-full w-8 z-10">
-                    <div className="flex items-center justify-center h-full">
-                      <ArrowRight className="w-8 h-8 text-primary animate-pulse" />
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      
       {/* Visual Demo Section */}
       <section className="py-20 bg-muted/20">
         <div className="max-w-7xl mx-auto px-6 sm:px-8">
@@ -193,7 +121,7 @@ const HowItWorks = () => {
 
             {/* Right: Analysis Results Demo */}
             <div className="space-y-6">
-              <Card className="shadow-2xl border-border/50">
+              <Card className="shadow-2xl border-border/50 overflow-hidden">
                 <CardHeader className="bg-gradient-to-r from-primary/5 to-secondary/5 border-b border-border/50">
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center gap-2">
@@ -207,50 +135,128 @@ const HowItWorks = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <div className="space-y-6">
-                    {/* Hormone Values Grid */}
-                    <div className="grid grid-cols-2 gap-4">
-                      {[
-                        { name: 'LH', value: '17.95', unit: 'mIU/mL', status: 'normal', color: 'from-red-500 to-pink-500' },
-                        { name: 'FSH', value: '5.71', unit: 'mIU/mL', status: 'normal', color: 'from-blue-500 to-cyan-500' },
-                        { name: 'PROG', value: '0.62', unit: 'ng/mL', status: 'low', color: 'from-green-500 to-emerald-500' },
-                        { name: 'E2', value: '47.94', unit: 'pg/mL', status: 'normal', color: 'from-teal-500 to-cyan-500' }
-                      ].map((hormone, idx) => (
-                        <div key={idx} className="p-4 rounded-lg bg-muted/30 border border-border/30 hover:shadow-md transition-shadow">
-                          <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${hormone.color} mb-2 flex items-center justify-center`}>
-                            <span className="text-white font-bold text-xs">{hormone.name}</span>
+                  {/* Toggle: Simulation / Video */}
+                  <Tabs defaultValue="simulation" className="space-y-6">
+                    <TabsList className="grid grid-cols-2 w-full">
+                      <TabsTrigger value="simulation">Live Simulation</TabsTrigger>
+                      <TabsTrigger value="video">Demo Video</TabsTrigger>
+                    </TabsList>
+
+                    {/* Simulation Flow */}
+                    <TabsContent value="simulation" className="space-y-6">
+                      {/* Stepper */}
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <div className={`flex items-center gap-2 ${step === 'upload' ? 'text-foreground' : ''}`}>
+                          <div className={`w-6 h-6 rounded-full flex items-center justify-center ${step === 'upload' ? 'bg-primary text-white' : 'bg-muted'}`}>
+                            <Upload className="w-3 h-3" />
                           </div>
-                          <div className="text-lg font-bold text-primary">{hormone.value}</div>
-                          <div className="text-xs text-muted-foreground">{hormone.unit}</div>
-                          <div className={`text-xs mt-1 ${hormone.status === 'normal' ? 'text-success' : 'text-warning'}`}>
-                            {hormone.status === 'normal' ? '✓ Normal' : '⚠ Low'}
+                          Upload
+                        </div>
+                        <div className={`flex items-center gap-2 ${step === 'ocr' ? 'text-foreground' : ''}`}>
+                          <div className={`w-6 h-6 rounded-full flex items-center justify-center ${step === 'ocr' ? 'bg-primary text-white' : 'bg-muted'}`}>
+                            <ScanLine className="w-3 h-3" />
                           </div>
+                          OCR & Extract
                         </div>
-                      ))}
-                    </div>
-                    
-                    {/* AI Recommendations */}
-                    <div className="space-y-3">
-                      <h4 className="font-medium text-foreground flex items-center gap-2">
-                        <Target className="w-4 h-4 text-primary" />
-                        AI Personalized Recommendations
-                      </h4>
-                      <div className="space-y-2 text-sm text-muted-foreground">
-                        <div className="flex items-start gap-2 p-2 rounded bg-primary/5">
-                          <ArrowRight className="w-4 h-4 mt-0.5 text-primary flex-shrink-0" />
-                          <span>Consider progesterone support during luteal phase</span>
+                        <div className={`flex items-center gap-2 ${step === 'charts' ? 'text-foreground' : ''}`}>
+                          <div className={`w-6 h-6 rounded-full flex items-center justify-center ${step === 'charts' ? 'bg-primary text-white' : 'bg-muted'}`}>
+                            <BarChart3 className="w-3 h-3" />
+                          </div>
+                          Charts
                         </div>
-                        <div className="flex items-start gap-2 p-2 rounded bg-primary/5">
-                          <ArrowRight className="w-4 h-4 mt-0.5 text-primary flex-shrink-0" />
-                          <span>Optimize vitamin D levels to support hormone balance</span>
-                        </div>
-                        <div className="flex items-start gap-2 p-2 rounded bg-primary/5">
-                          <ArrowRight className="w-4 h-4 mt-0.5 text-primary flex-shrink-0" />
-                          <span>Track basal body temperature for cycle insights</span>
+                        <div className={`flex items-center gap-2 ${step === 'insights' ? 'text-foreground' : ''}`}>
+                          <div className={`w-6 h-6 rounded-full flex items-center justify-center ${step === 'insights' ? 'bg-primary text-white' : 'bg-muted'}`}>
+                            <Sparkles className="w-3 h-3" />
+                          </div>
+                          AI Insights
                         </div>
                       </div>
-                    </div>
-                  </div>
+
+                      {/* Dynamic body */}
+                      <div className="p-4 rounded-lg border border-border/50 bg-card/50 min-h-[220px] flex items-center justify-center">
+                        {step === 'upload' && (
+                          <div className="text-center space-y-2">
+                            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                              <Upload className="w-6 h-6 text-primary animate-bounce" />
+                            </div>
+                            <div className="text-sm text-muted-foreground">Uploading report...</div>
+                          </div>
+                        )}
+                        {step === 'ocr' && (
+                          <div className="w-full">
+                            <div className="h-2 w-full bg-muted rounded overflow-hidden">
+                              <div className="h-full w-2/3 bg-gradient-to-r from-primary to-primary-glow animate-pulse" />
+                            </div>
+                            <div className="mt-3 text-sm text-muted-foreground">Reading values: LH, FSH, PROG, T, PRL, E2</div>
+                            <div className="mt-1 text-xs text-muted-foreground">Extracting reference ranges and units</div>
+                          </div>
+                        )}
+                        {step === 'charts' && (
+                          <div className="w-full h-48">
+                            <ResponsiveContainer width="100%" height="100%">
+                              <LineChart data={miniData}>
+                                <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                                <XAxis dataKey="date" className="text-[10px]" />
+                                <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: 8 }} />
+                                <Line type="monotone" dataKey="LH" stroke="#8B5CF6" strokeWidth={2} dot={false} />
+                                <Line type="monotone" dataKey="FSH" stroke="#06B6D4" strokeWidth={2} dot={false} />
+                                <Line type="monotone" dataKey="E2" stroke="#EC4899" strokeWidth={2} dot={false} />
+                              </LineChart>
+                            </ResponsiveContainer>
+                          </div>
+                        )}
+                        {step === 'insights' && (
+                          <div className="space-y-3 w-full">
+                            <h4 className="font-medium text-foreground flex items-center gap-2">
+                              <Target className="w-4 h-4 text-primary" />
+                              AI Personalized Recommendations
+                            </h4>
+                            <div className="space-y-2 text-sm text-muted-foreground">
+                              <div className="flex items-start gap-2 p-2 rounded bg-primary/5">
+                                <ArrowRight className="w-4 h-4 mt-0.5 text-primary flex-shrink-0" />
+                                <span>Consider progesterone support during luteal phase</span>
+                              </div>
+                              <div className="flex items-start gap-2 p-2 rounded bg-primary/5">
+                                <ArrowRight className="w-4 h-4 mt-0.5 text-primary flex-shrink-0" />
+                                <span>Optimize vitamin D levels to support hormone balance</span>
+                              </div>
+                              <div className="flex items-start gap-2 p-2 rounded bg-primary/5">
+                                <ArrowRight className="w-4 h-4 mt-0.5 text-primary flex-shrink-0" />
+                                <span>Track basal body temperature for cycle insights</span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* CTA row */}
+                      <div className="flex items-center justify-between">
+                        <div className="text-xs text-muted-foreground">Automatically identifies 6 hormone indicators and visualizes trends</div>
+                        <Link to="/dashboard?tab=trends">
+                          <Button variant="outline" size="sm" className="flex items-center gap-2">
+                            <TrendingUp className="w-4 h-4" />
+                            View Trends
+                          </Button>
+                        </Link>
+                      </div>
+                    </TabsContent>
+
+                    {/* Video Demo */}
+                    <TabsContent value="video">
+                      <div className="rounded-lg overflow-hidden border border-border/50">
+                        <video
+                          src="https://cdn.coverr.co/videos/coverr-medical-lab-people-6927/1080p.mp4"
+                          poster="/placeholder.svg"
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          className="w-full h-64 object-cover"
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-2">Demo video for illustrative purposes. Actual UI shows medical-grade charts and AI insights based on six hormone indicators.</p>
+                    </TabsContent>
+                  </Tabs>
                 </CardContent>
               </Card>
             </div>
