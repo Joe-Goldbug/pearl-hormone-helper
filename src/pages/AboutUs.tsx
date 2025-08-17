@@ -14,24 +14,103 @@ const AboutUs = () => {
   return (
     <main className="min-h-screen bg-background">
       <Navigation variant="transparent" />
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 lg:py-32">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5"></div>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 relative">
-          <div className="text-center space-y-8">
-            <Badge className="bg-primary/10 text-primary border-primary/20 w-fit mx-auto">
-              <Heart className="w-3 h-3 mr-1" />
-              Built for Women's Health
+
+
+           {/* Team Introduction */}
+      <section className="py-20 bg-muted/20">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8">
+          <div className="text-center space-y-4 mb-16">
+            <Badge className="bg-accent/10 text-accent border-accent/20 w-fit mx-auto">
+              <Users className="w-3 h-3 mr-1" />
+              Core Team
             </Badge>
-            <h1 className="text-4xl lg:text-6xl font-bold text-foreground leading-tight">
-              Empowering Women's Health
-              <span className="bg-gradient-to-r from-primary via-primary-glow to-secondary-accent bg-clip-text text-transparent">
-                {' '}with AI Technology
-              </span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Pearl is designed for women aged 25-45 facing fertility challenges. We understand the difficulty of interpreting hormone reports, so we created an intelligent platform that simplifies complex medical data into understandable insights.
+            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
+              Meet Our Team
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              We are a passionate group of technology experts and healthcare advocates dedicated to improving women's reproductive health through AI technology.
             </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            {[
+              {
+                name: "Aqsan",
+                role: "团队掌舵人",
+                background: "团队的\"点火者\"与掌舵人，用细致入微的行动力让最初的创业点子落地生根。",
+                expertise: ["创业领导", "项目管理", "战略规划"],
+                avatar: "/aqsan.jpg"
+              },
+              {
+                name: "Rebecca",
+                role: "信息挖掘专家",
+                background: "我是团队的\"信息挖掘机\"，专治各种资料空缺。",
+                expertise: ["信息收集", "资料整理", "研究分析"],
+                avatar: "/rebecca.jpg"
+              },
+              {
+                name: "Max Sun",
+                role: "数据分析师",
+                background: "在团队中主要负责数据分析和翻译工作，熟悉教育与科技相关领域。",
+                expertise: ["数据分析", "翻译", "教育科技"],
+                avatar: "/max-sun.jpg"
+              },
+              {
+                name: "Ethan",
+                role: "产品专家",
+                background: "从事互联网&教育行业，专治产品不育不孕。",
+                expertise: ["产品设计", "互联网", "教育行业"],
+                avatar: "/ethanl.jpg"
+              },
+              {
+                name: "White Peace",
+                role: "全栈工程师",
+                background: "全栈工程师，负责技术架构和开发实现。",
+                expertise: ["前端开发", "后端开发", "技术架构"],
+                avatar: "/White-Peace.jpg"
+              }
+            ].map((member, index) => (
+              <Card key={index} className="border-border/50 hover:border-primary/20 hover:shadow-xl transition-all duration-500 group">
+                <CardContent className="p-6 text-center">
+                  <div className="w-24 h-24 rounded-full mx-auto mb-4 group-hover:scale-105 transition-transform overflow-hidden border-2 border-primary/20">
+                    <img 
+                      src={member.avatar} 
+                      alt={`${member.name} - ${member.role}`}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        // Fallback to initials if image fails to load
+                        e.currentTarget.style.display = 'none';
+                        const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                        if (nextElement) {
+                          nextElement.style.display = 'flex';
+                        }
+                      }}
+                    />
+                    <div className="w-full h-full rounded-full bg-gradient-to-br from-primary to-primary-glow hidden items-center justify-center text-white font-bold text-lg">
+                      {member.name.split(' ').map(n => n[0]).join('')}
+                    </div>
+                  </div>
+                  <h3 className="font-semibold text-lg mb-1">{member.name}</h3>
+                  <p className="text-primary font-medium mb-2">{member.role}</p>
+                  <p className="text-sm text-muted-foreground mb-4">{member.background}</p>
+                  <div className="flex flex-wrap gap-2 justify-center mb-4">
+                    {member.expertise.map((skill, idx) => (
+                      <Badge key={idx} variant="secondary" className="text-xs">
+                        {skill}
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className="flex justify-center gap-3">
+                    <Button variant="ghost" size="sm" className="w-8 h-8 p-0">
+                      <Mail className="w-4 h-4" />
+                    </Button>
+                    <Button variant="ghost" size="sm" className="w-8 h-8 p-0">
+                      <Linkedin className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
@@ -90,77 +169,7 @@ const AboutUs = () => {
         </div>
       </section>
 
-      {/* Team Introduction */}
-      <section className="py-20 bg-muted/20">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <Badge className="bg-accent/10 text-accent border-accent/20 w-fit mx-auto">
-              <Users className="w-3 h-3 mr-1" />
-              Core Team
-            </Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Meet Our Team
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              We are a passionate group of technology experts and healthcare advocates dedicated to improving women's reproductive health through AI technology.
-            </p>
-          </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Dr. Sarah Chen",
-                role: "Chief Medical Officer",
-                background: "PhD in Reproductive Endocrinology, 10 years clinical experience",
-                expertise: ["Hormone Analysis", "Fertility Medicine", "Clinical Research"],
-                avatar: "/api/placeholder/150/150"
-              },
-              {
-                name: "Alex Zhang",
-                role: "Chief Technology Officer",
-                background: "AI/ML Expert, Former Google Senior Engineer",
-                expertise: ["Machine Learning", "Medical AI", "Data Science"],
-                avatar: "/api/placeholder/150/150"
-              },
-              {
-                name: "Emily Wang",
-                role: "Head of Product Design",
-                background: "UX Design Expert, focused on healthcare products",
-                expertise: ["User Experience", "Product Design", "User Research"],
-                avatar: "/api/placeholder/150/150"
-              }
-            ].map((member, index) => (
-              <Card key={index} className="border-border/50 hover:border-primary/20 hover:shadow-xl transition-all duration-500 group">
-                <CardContent className="p-6 text-center">
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 mx-auto mb-4 flex items-center justify-center group-hover:scale-105 transition-transform">
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center text-white font-bold text-lg">
-                      {member.name.split(' ').map(n => n[0]).join('')}
-                    </div>
-                  </div>
-                  <h3 className="font-semibold text-lg mb-1">{member.name}</h3>
-                  <p className="text-primary font-medium mb-2">{member.role}</p>
-                  <p className="text-sm text-muted-foreground mb-4">{member.background}</p>
-                  <div className="flex flex-wrap gap-2 justify-center mb-4">
-                    {member.expertise.map((skill, idx) => (
-                      <Badge key={idx} variant="secondary" className="text-xs">
-                        {skill}
-                      </Badge>
-                    ))}
-                  </div>
-                  <div className="flex justify-center gap-3">
-                    <Button variant="ghost" size="sm" className="w-8 h-8 p-0">
-                      <Mail className="w-4 h-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm" className="w-8 h-8 p-0">
-                      <Linkedin className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Project Vision */}
       <section className="py-20">

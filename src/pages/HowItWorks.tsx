@@ -16,6 +16,19 @@ const HowItWorks = () => {
   const { t } = useLanguage();
   const { user, login, logout } = useAuth();
 
+  // Handle anchor scrolling
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      const element = document.querySelector(hash);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setStep((prev) => (prev === 'upload' ? 'ocr' : prev === 'ocr' ? 'charts' : prev === 'charts' ? 'insights' : 'upload'));
@@ -68,13 +81,9 @@ const HowItWorks = () => {
 
       
       {/* Visual Demo Section */}
-      <section className="py-20 bg-muted/20">
+      <section id="visual-demo" className="py-20 bg-muted/20">
         <div className="max-w-7xl mx-auto px-6 sm:px-8">
           <div className="text-center space-y-4 mb-16">
-            <Badge className="bg-primary/10 text-primary border-primary/20 w-fit mx-auto">
-              <Activity className="w-3 h-3 mr-1" />
-              Live Demo
-            </Badge>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
               See How AI Analyzes Your Hormone Data
             </h2>

@@ -25,10 +25,6 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <div className="space-y-6">
-                <Badge className="bg-primary/10 text-primary border-primary/20 w-fit">
-                  <Brain className="w-3 h-3 mr-1" />
-                  AI-Powered Hormone Analysis
-                </Badge>
                 <h1 className="text-4xl lg:text-6xl font-bold text-foreground leading-tight"> 
                   <span className="bg-gradient-to-r from-primary via-primary-glow to-secondary-accent bg-clip-text text-transparent">
                     Your fertility hormones, decoded
@@ -263,13 +259,13 @@ const Index = () => {
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
-                <Link to="/how-it-works">
-                  <Button variant="outline" size="lg" className="group">
-                    <PlayCircle className="w-5 h-5 mr-2" />
-                    See How It Works
-                    <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
+                  <Link to="/how-it-works#visual-demo">
+                    <Button variant="outline" size="lg" className="group">
+                      <PlayCircle className="w-5 h-5 mr-2" />
+                      See How It Works
+                      <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
               </div>
             </div>
           </div>
