@@ -35,7 +35,7 @@ const AboutUs = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {[
               {
-                name: "Aqsan",
+                name: "Aqsa",
                 role: "团队掌舵人",
                 background: "团队的\"点火者\"与掌舵人，用细致入微的行动力让最初的创业点子落地生根。",
                 expertise: ["创业领导", "项目管理", "战略规划"],
@@ -44,7 +44,7 @@ const AboutUs = () => {
               {
                 name: "Rebecca",
                 role: "信息挖掘专家",
-                background: "我是团队的\"信息挖掘机\"，专治各种资料空缺。",
+                background: "团队的\"信息挖掘机\"，专治各种资料空缺。",
                 expertise: ["信息收集", "资料整理", "研究分析"],
                 avatar: "/rebecca.jpg"
               },
