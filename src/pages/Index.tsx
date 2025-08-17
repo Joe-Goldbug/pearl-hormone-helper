@@ -107,7 +107,7 @@ const Index = () => {
           <div className="text-center space-y-6 mb-16">
             <div className="space-y-4">
               <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-                Your <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Fertility Hormones</span> Starts Here
+                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Optimise Your Fertility Journey</span> 
 
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
